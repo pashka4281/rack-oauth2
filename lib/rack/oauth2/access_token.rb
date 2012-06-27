@@ -3,10 +3,12 @@ module Rack
     class AccessToken
       include AttrRequired, AttrOptional
       attr_required :access_token, :token_type, :httpclient
-      attr_optional :refresh_token, :expires_in, :scope
+      attr_optional :refresh_token, :expires_in, :scope, :instance_url
+      attr_accessor :attrs
       delegate :get, :post, :put, :delete, :to => :httpclient
 
       def initialize(attributes = {})
+        @attrs = attributes
         (required_attributes + optional_attributes).each do |key|
           self.send :"#{key}=", attributes[key]
         end
